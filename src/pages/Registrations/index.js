@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Text } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Text, Image } from 'react-native';
 
+import Banner from '../../assets/Bitmap.png';
 import Background from '../../components/Background';
 import Header from '../../components/Header';
 import api from '../../services/api';
@@ -29,6 +29,11 @@ export default function Registrations() {
           keyExtractor={item => String(item.id)}
           renderItem={({ item }) => (
             <Meet past={item.past}>
+              <Image
+                source={{
+                  uri: item.Meetup.banner ? item.Meetup.banner.url : Banner,
+                }}
+              />
               <Text>{item.Meetup.title}</Text>
               <Text>{item.Meetup.date}</Text>
               <Text>{item.Meetup.localization}</Text>

@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Background from '../../components/Background';
 import Header from '../../components/Header';
@@ -75,8 +74,4 @@ export default function NewMeet() {
 
 NewMeet.navigationOptions = {
   headerTitle: <Header />,
-  // tabBarLabel: 'New Meetup',
-  // tabBarIcon: ({ tintColor }) => (
-  //   <Icon name="add-circle-outline" size={20} color={tintColor} />
-  // ),
 };

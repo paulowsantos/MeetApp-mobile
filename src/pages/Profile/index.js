@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Background from '../../components/Background';
 import Header from '../../components/Header';

@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Text } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import defaultBanner from '../../../assets/Bitmap.png';
 import Background from '../../../components/Background';
 import api from '../../../services/api';
 
-import { Container, MeetsList, Meet } from './styles';
+import {
+  Container,
+  MeetsList,
+  Meet,
+  Banner,
+  Infos,
+  Title,
+  InfoInfo,
+  InfoText,
+  CancelButton,
+  TextButton,
+} from './styles';
 
 export default function MyMeets() {
   const [myMeets, setMyMeets] = useState([]);
@@ -27,9 +40,23 @@ export default function MyMeets() {
           keyExtractor={item => String(item.id)}
           renderItem={({ item }) => (
             <Meet past={item.past}>
-              <Text>{item.title}</Text>
-              <Text>{item.date}</Text>
-              <Text>{item.localization}</Text>
+              <Banner
+                source={item.banner ? { uri: item.banner.url } : defaultBanner}
+              />
+              <Infos>
+                <Title>{item.title}</Title>
+                <InfoInfo>
+                  <Icon name="event" size={15} color="#999" />
+                  <InfoText>{item.date}</InfoText>
+                </InfoInfo>
+                <InfoInfo>
+                  <Icon name="location-on" size={15} color="#999" />
+                  <InfoText>{item.localization}</InfoText>
+                </InfoInfo>
+              </Infos>
+              <CancelButton>
+                <TextButton>Cancel</TextButton>
+              </CancelButton>
             </Meet>
           )}
         />

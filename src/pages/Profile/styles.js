@@ -1,10 +1,12 @@
 import styled from 'styled-components/native';
+import { RectButton } from 'react-native-gesture-handler';
 
 import Input from '../../components/Input';
-import Button from '../../components/Button';
 
 export const Container = styled.View`
   flex: 1;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Separator = styled.View`
@@ -24,11 +26,35 @@ export const FormInput = styled(Input)`
   margin-bottom: 10px;
 `;
 
-export const SubmitButton = styled(Button)`
+export const SubmitButton = styled(RectButton)`
+  background: #f64c75;
   margin-top: 5px;
+  height: 46px;
+  border-radius: 4px;
+  align-items: center;
+  justify-content: center;
 `;
 
-export const LogoutButton = styled(Button)`
-  margin-top: 10px;
+export const LogoutButton = styled(RectButton)`
   background: #f64c75;
+  margin-top: 10px;
+  height: 46px;
+  border-radius: 4px;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const TextButton = styled.Text`
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+`;
+
+export const AvatarInput = styled.TouchableOpacity`
+  align-self: center;
+  margin-bottom: 30px;
+  /* height: 150px;
+  /* width: 150px; */
+  /* border-radius: 75px; */
+  /* background: #eee; */
 `;

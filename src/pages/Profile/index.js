@@ -1,8 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Text } from 'react-native';
+import { Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
 
 import Background from '../../components/Background';
+import api from '../../services/api';
 import Header from '../../components/Header';
 import { updateProfileRequest } from '../../store/modules/user/actions';
 import { signOut } from '../../store/modules/auth/actions';
@@ -13,6 +17,8 @@ import {
   Separator,
   SubmitButton,
   LogoutButton,
+  TextButton,
+  AvatarInput,
 } from './styles';
 
 export default function Profile() {
@@ -29,6 +35,21 @@ export default function Profile() {
   const [oldPassword, setOldPassword] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [avatarimg, setAvatarimg] = useState(profile.avatar.url);
+  const [avatar_id, setAvatarid] = useState('');
+
+  useEffect(() => {
+    async function getPermission() {
+      if (Constants.platform.ios) {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    }
+
+    getPermission();
+  }, []);
 
   useEffect(() => {
     setOldPassword('');
@@ -41,6 +62,7 @@ export default function Profile() {
       updateProfileRequest({
         name,
         email,
+        avatar_id,
         oldPassword,
         password,
         confirmPassword,
@@ -52,10 +74,58 @@ export default function Profile() {
     dispatch(signOut());
   }
 
+  async function handleAvatar() {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    if (!result.cancelled) {
+      console.tron.log(result);
+      setAvatarimg(result.uri);
+    }
+
+    // const originalName
+    const data = new FormData();
+    console.tron.log(data);
+
+    data.append('file', {
+      originalname: 'teste.svg',
+      filename: Constants.platform.ios
+        ? result.uri.replace('file://', '')
+        : result.uri,
+    });
+
+    console.tron.log(data);
+
+    const response = await api.post('files', data);
+
+    const { id } = response.data;
+
+    setAvatarid(id);
+  }
+
   return (
     <Background>
       <Container>
         <Form>
+          <AvatarInput onPress={handleAvatar}>
+            <Image
+              style={{
+                width: 150,
+                height: 150,
+                borderRadius: 75,
+                borderWidth: 5,
+                borderColor: '#999',
+              }}
+              source={{
+                uri:
+                  avatarimg ||
+                  'https://api.adorable.io/avatars/50/abott@adorable.png',
+              }}
+            />
+          </AvatarInput>
           <FormInput
             icon="person-outline"
             autoCorrect={false}
@@ -116,10 +186,10 @@ export default function Profile() {
           />
 
           <SubmitButton onPress={handleSubmit}>
-            <Text>Save</Text>
+            <TextButton>Save</TextButton>
           </SubmitButton>
           <LogoutButton onPress={handleLogout}>
-            <Text>Log out</Text>
+            <TextButton>Log out</TextButton>
           </LogoutButton>
         </Form>
       </Container>

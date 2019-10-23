@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Text, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import Banner from '../../assets/Bitmap.png';
+import defaultBanner from '../../assets/Bitmap.png';
 import Background from '../../components/Background';
 import Header from '../../components/Header';
 import api from '../../services/api';
 
-import { Container, MeetsList, Meet } from './styles';
+import {
+  Container,
+  MeetsList,
+  Meet,
+  Banner,
+  Infos,
+  Title,
+  InfoInfo,
+  InfoText,
+  CancelButton,
+  TextButton,
+} from './styles';
 
 export default function Registrations() {
   const [myMeets, setMyMeets] = useState([]);
@@ -29,15 +41,31 @@ export default function Registrations() {
           keyExtractor={item => String(item.id)}
           renderItem={({ item }) => (
             <Meet past={item.past}>
-              <Image
-                source={{
-                  uri: item.Meetup.banner ? item.Meetup.banner.url : Banner,
-                }}
+              <Banner
+                source={
+                  item.Meetup.banner
+                    ? { uri: item.Meetup.banner.url }
+                    : defaultBanner
+                }
               />
-              <Text>{item.Meetup.title}</Text>
-              <Text>{item.Meetup.date}</Text>
-              <Text>{item.Meetup.localization}</Text>
-              <Text>{item.Meetup.User.name}</Text>
+              <Infos>
+                <Title>{item.Meetup.title}</Title>
+                <InfoInfo>
+                  <Icon name="event" size={15} color="#999" />
+                  <InfoText>{item.Meetup.date}</InfoText>
+                </InfoInfo>
+                <InfoInfo>
+                  <Icon name="location-on" size={15} color="#999" />
+                  <InfoText>{item.Meetup.localization}</InfoText>
+                </InfoInfo>
+                <InfoInfo>
+                  <Icon name="person" size={15} color="#999" />
+                  <InfoText>Organizer: {item.Meetup.User.name}</InfoText>
+                </InfoInfo>
+              </Infos>
+              <CancelButton>
+                <TextButton>Cancel Registration</TextButton>
+              </CancelButton>
             </Meet>
           )}
         />

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import Background from '../../components/Background';
 import Header from '../../components/Header';
 
-import { Container, Form, FormInput, SubmitButton } from './styles';
+import { Container, Form, FormInput, SubmitButton, TextButton } from './styles';
 
 export default function NewMeet() {
   const descRef = useRef();
@@ -64,7 +64,7 @@ export default function NewMeet() {
           />
 
           <SubmitButton loading={loading} onPress={handleSubmit}>
-            <Text>Save</Text>
+            <TextButton>Save</TextButton>
           </SubmitButton>
         </Form>
       </Container>

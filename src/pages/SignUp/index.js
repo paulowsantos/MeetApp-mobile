@@ -11,6 +11,7 @@ import {
   Form,
   FormInput,
   SubmitButton,
+  TextButton,
   SignLink,
   SignLinkText,
 } from './styles';
@@ -71,7 +72,7 @@ export default function SignUp({ navigation }) {
           />
 
           <SubmitButton loading={loading} onPress={handleSubmit}>
-            <Text>Sign Up</Text>
+            <TextButton>Sign Up</TextButton>
           </SubmitButton>
         </Form>
 

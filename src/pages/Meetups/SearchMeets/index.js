@@ -4,6 +4,7 @@ import { format, subDays, addDays } from 'date-fns';
 import ca from 'date-fns/locale/en-CA';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import defaultBanner from '../../../assets/Bitmap.png';
 import Background from '../../../components/Background';
 import api from '../../../services/api';
 
@@ -14,6 +15,13 @@ import {
   DateText,
   MeetsList,
   Meet,
+  Banner,
+  Infos,
+  Title,
+  InfoInfo,
+  InfoText,
+  RegisterButton,
+  TextButton,
 } from './styles';
 
 export default function SearchMeets() {
@@ -68,10 +76,27 @@ export default function SearchMeets() {
           keyExtractor={item => String(item.id)}
           renderItem={({ item }) => (
             <Meet past={item.past}>
-              <Text>{item.title}</Text>
-              <Text>{item.date}</Text>
-              <Text>{item.localization}</Text>
-              <Text>{item.User.name}</Text>
+              <Banner
+                source={item.banner ? { uri: item.banner.url } : defaultBanner}
+              />
+              <Infos>
+                <Title>{item.title}</Title>
+                <InfoInfo>
+                  <Icon name="event" size={15} color="#999" />
+                  <InfoText>{item.date}</InfoText>
+                </InfoInfo>
+                <InfoInfo>
+                  <Icon name="location-on" size={15} color="#999" />
+                  <InfoText>{item.localization}</InfoText>
+                </InfoInfo>
+                <InfoInfo>
+                  <Icon name="person" size={15} color="#999" />
+                  <InfoText>Organizer: {item.User.name}</InfoText>
+                </InfoInfo>
+              </Infos>
+              <RegisterButton>
+                <TextButton>Register</TextButton>
+              </RegisterButton>
             </Meet>
           )}
         />

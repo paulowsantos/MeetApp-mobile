@@ -28,4 +28,9 @@ export function* updateProfile({ payload }) {
   }
 }
 
-export default all([takeLatest('@user/UPDATE_PROFILE_REQUEST', updateProfile)]);
+export function* updateAvatar({ payload }) {}
+
+export default all([
+  takeLatest('@user/UPDATE_PROFILE_REQUEST', updateProfile),
+  takeLatest('@user/UPDATE_AVATAR_REQUEST', updateAvatar),
+]);

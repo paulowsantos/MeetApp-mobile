@@ -39,6 +39,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-unused-vars': ['error', {argsIgnorePattern: '^_'}],
     'react/jsx-one-expression-pre-line': 'off',
+    'react/forbid-prop-types': 'off',
     'global-require': 'off',
     'react-native/no-raw-text': 'off',
     'no-param-reassign': 'off',

@@ -1,7 +1,26 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
   flex: 1;
+  flex-direction: column;
+`;
+
+export const Header = styled.View`
+  flex-direction: row;
+  align-self: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
+export const NavButton = styled.TouchableOpacity`
+  border: 0;
+`;
+
+export const DateText = styled.Text`
+  color: #fff;
+  font-size: 24px;
+  margin: 0 15px;
 `;
 
 export const MeetsList = styled.FlatList.attrs({

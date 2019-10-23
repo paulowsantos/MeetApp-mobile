@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Background from '../../components/Background';
+import Header from '../../components/Header';
 import { updateProfileRequest } from '../../store/modules/user/actions';
 import { signOut } from '../../store/modules/auth/actions';
 import {
   Container,
-  Title,
   Form,
   FormInput,
   Separator,
@@ -56,8 +56,6 @@ export default function Profile() {
   return (
     <Background>
       <Container>
-        <Title>Profile</Title>
-
         <Form>
           <FormInput
             icon="person-outline"
@@ -131,8 +129,5 @@ export default function Profile() {
 }
 
 Profile.navigationOptions = {
-  tabBarLabel: 'Profile',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="person" size={20} color={tintColor} />
-  ),
+  headerTitle: <Header />,
 };

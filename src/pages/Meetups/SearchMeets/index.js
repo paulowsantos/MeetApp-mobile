@@ -4,8 +4,8 @@ import { format, subDays, addDays } from 'date-fns';
 import ca from 'date-fns/locale/en-CA';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import Background from '../../components/Background';
-import api from '../../services/api';
+import Background from '../../../components/Background';
+import api from '../../../services/api';
 
 import {
   Container,
@@ -65,7 +65,7 @@ export default function SearchMeets() {
 
         <MeetsList
           data={meets}
-          keyExtractor={item => String(item)}
+          keyExtractor={item => String(item.id)}
           renderItem={({ item }) => (
             <Meet past={item.past}>
               <Text>{item.title}</Text>
@@ -82,7 +82,4 @@ export default function SearchMeets() {
 
 SearchMeets.navigationOptions = {
   tabBarLabel: 'Meetups',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="menu" size={20} color={tintColor} />
-  ),
 };

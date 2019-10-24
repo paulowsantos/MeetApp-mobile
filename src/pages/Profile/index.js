@@ -84,26 +84,26 @@ export default function Profile() {
     if (!result.cancelled) {
       console.tron.log(result);
       setAvatarimg(result.uri);
+
+      // const originalName
+      const data = new FormData();
+      console.tron.log(data);
+
+      data.append('file', {
+        originalname: 'teste.svg',
+        filename: Constants.platform.ios
+          ? result.uri.replace('file://', '')
+          : result.uri,
+      });
+
+      console.tron.log(data);
+
+      const response = await api.post('files', data);
+
+      const { id } = response.data;
+
+      setAvatarid(id);
     }
-
-    // const originalName
-    const data = new FormData();
-    console.tron.log(data);
-
-    data.append('file', {
-      originalname: 'teste.svg',
-      filename: Constants.platform.ios
-        ? result.uri.replace('file://', '')
-        : result.uri,
-    });
-
-    console.tron.log(data);
-
-    const response = await api.post('files', data);
-
-    const { id } = response.data;
-
-    setAvatarid(id);
   }
 
   return (

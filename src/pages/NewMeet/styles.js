@@ -32,3 +32,19 @@ export const TextButton = styled.Text`
   font-weight: bold;
   font-size: 16px;
 `;
+
+export const BannerInput = styled.TouchableOpacity`
+  width: 100%;
+  height: 200px;
+  align-self: center;
+  margin-bottom: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+`;
+
+export const BannerContent = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.6);
+`;

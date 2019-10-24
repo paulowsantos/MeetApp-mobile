@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text } from 'react-native';
+import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import defaultBanner from '../../../assets/Bitmap.png';
@@ -22,15 +22,27 @@ import {
 export default function MyMeets() {
   const [myMeets, setMyMeets] = useState([]);
 
+  async function loadMyMeets() {
+    const response = await api.get('meetups');
+
+    setMyMeets(response.data);
+  }
+
   useEffect(() => {
-    async function loadMyMeets() {
-      const response = await api.get('meetups');
-
-      setMyMeets(response.data);
-    }
-
     loadMyMeets();
-  }, []);
+  }, [myMeets]);
+
+  async function handleCancel(id) {
+    try {
+      const meet = { id };
+
+      await api.delete('/meetups', { data: meet });
+
+      Alert.alert('Success', 'Meetup canceld.');
+    } catch (err) {
+      Alert.alert('Error.', 'Meetup does not exists.');
+    }
+  }
 
   return (
     <Background>
@@ -54,7 +66,7 @@ export default function MyMeets() {
                   <InfoText>{item.localization}</InfoText>
                 </InfoInfo>
               </Infos>
-              <CancelButton>
+              <CancelButton onPress={() => handleCancel(item.id)}>
                 <TextButton>Cancel</TextButton>
               </CancelButton>
             </Meet>

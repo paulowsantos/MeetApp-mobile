@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Text, Image } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { Text, Image, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -26,7 +25,7 @@ export default function NewMeet() {
   const locRef = useRef();
 
   const [title, setTitle] = useState('');
-  const [desc, detDesc] = useState('');
+  const [desc, setDesc] = useState('');
   const [date, setDate] = useState('');
   const [local, setLocal] = useState('');
   const [bannerId, setBannerId] = useState();
@@ -47,13 +46,31 @@ export default function NewMeet() {
     getPermission();
   }, []);
 
-  function handleSubmit() {}
+  async function handleSubmit() {
+    try {
+      const meet = {
+        title,
+        description: desc,
+        localization: local,
+        date,
+      };
+
+      await api.post('/meetups', meet);
+
+      Alert.alert('Success!', 'Meetup successfuly created.');
+
+      setTitle('');
+      setDesc('');
+      setDate('');
+      setLocal('');
+    } catch (err) {
+      Alert.alert('Error', 'Check your input data.');
+    }
+  }
 
   async function handleBanner() {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      // allowsEditing: true,
-      // aspect: [16, 9],
     });
 
     if (!result.cancelled) {
@@ -108,9 +125,6 @@ export default function NewMeet() {
             )}
           </BannerInput>
           <FormInput
-            keyboardType="email-address"
-            autoCorrect={false}
-            autoCapitalize="none"
             placeholder="Meetup Title"
             returnKeyType="next"
             onSubmitEditing={() => descRef.current.focus()}
@@ -122,7 +136,7 @@ export default function NewMeet() {
             placeholder="Description"
             ref={descRef}
             value={desc}
-            onChangeText={detDesc}
+            onChangeText={setDesc}
             multiline
             enablesReturnKeyAutomatically
             style={{

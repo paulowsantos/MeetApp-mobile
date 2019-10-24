@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Text } from 'react-native';
+import { Alert } from 'react-native';
 import { format, subDays, addDays } from 'date-fns';
 import ca from 'date-fns/locale/en-CA';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -58,6 +58,18 @@ export default function SearchMeets() {
     setDate(addDays(dateT, 1));
   }
 
+  async function handleReg(id) {
+    try {
+      const meet = { meetup_id: id };
+
+      await api.post('/enroll', meet);
+
+      Alert.alert('Success', 'Registered.');
+    } catch (err) {
+      Alert.alert('Error.', 'Registration failed.');
+    }
+  }
+
   return (
     <Background>
       <Container>
@@ -94,7 +106,7 @@ export default function SearchMeets() {
                   <InfoText>Organizer: {item.User.name}</InfoText>
                 </InfoInfo>
               </Infos>
-              <RegisterButton>
+              <RegisterButton onPress={() => handleReg(item.id)}>
                 <TextButton>Register</TextButton>
               </RegisterButton>
             </Meet>

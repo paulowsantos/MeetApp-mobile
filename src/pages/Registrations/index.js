@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Image } from 'react-native';
+import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import defaultBanner from '../../assets/Bitmap.png';
@@ -23,15 +23,27 @@ import {
 export default function Registrations() {
   const [myMeets, setMyMeets] = useState([]);
 
+  async function loadMyMeets() {
+    const response = await api.get('searchmymeets');
+
+    setMyMeets(response.data);
+  }
+
   useEffect(() => {
-    async function loadMyMeets() {
-      const response = await api.get('searchmymeets');
-
-      setMyMeets(response.data);
-    }
-
     loadMyMeets();
-  }, []);
+  }, [myMeets]);
+
+  async function handleCancel(id) {
+    try {
+      const meet = { id };
+
+      await api.delete('/enroll', { data: meet });
+
+      Alert.alert('Success', 'Registration canceld.');
+    } catch (err) {
+      Alert.alert('Error.', 'Fail.');
+    }
+  }
 
   return (
     <Background>
@@ -63,7 +75,7 @@ export default function Registrations() {
                   <InfoText>Organizer: {item.Meetup.User.name}</InfoText>
                 </InfoInfo>
               </Infos>
-              <CancelButton>
+              <CancelButton onPress={() => handleCancel(item.id)}>
                 <TextButton>Cancel Registration</TextButton>
               </CancelButton>
             </Meet>

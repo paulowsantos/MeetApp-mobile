@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Text, Image, Alert } from 'react-native';
+import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -8,6 +9,7 @@ import * as Permissions from 'expo-permissions';
 import api from '../../services/api';
 import Background from '../../components/Background';
 import Header from '../../components/Header';
+import { changeMeet } from '../../store/modules/meet/actions';
 
 import {
   Container,
@@ -20,6 +22,8 @@ import {
 } from './styles';
 
 export default function NewMeet() {
+  const dispatch = useDispatch();
+
   const descRef = useRef();
   const dateRef = useRef();
   const locRef = useRef();
@@ -56,6 +60,8 @@ export default function NewMeet() {
       };
 
       await api.post('/meetups', meet);
+
+      dispatch(changeMeet());
 
       Alert.alert('Success!', 'Meetup successfuly created.');
 

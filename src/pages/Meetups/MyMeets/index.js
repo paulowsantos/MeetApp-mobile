@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import defaultBanner from '../../../assets/Bitmap.png';
 import Background from '../../../components/Background';
 import api from '../../../services/api';
+import { changeMeet } from '../../../store/modules/meet/actions';
 
 import {
   Container,
@@ -20,6 +22,9 @@ import {
 } from './styles';
 
 export default function MyMeets() {
+  const dispatch = useDispatch();
+  const changedMeet = useSelector(state => state.meet.meetchanged);
+
   const [myMeets, setMyMeets] = useState([]);
 
   async function loadMyMeets() {
@@ -30,13 +35,15 @@ export default function MyMeets() {
 
   useEffect(() => {
     loadMyMeets();
-  }, [myMeets]);
+  }, [changedMeet]);
 
   async function handleCancel(id) {
     try {
       const meet = { id };
 
       await api.delete('/meetups', { data: meet });
+
+      dispatch(changeMeet());
 
       Alert.alert('Success', 'Meetup canceld.');
     } catch (err) {

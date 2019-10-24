@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { format, subDays, addDays } from 'date-fns';
 import ca from 'date-fns/locale/en-CA';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -7,6 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import defaultBanner from '../../../assets/Bitmap.png';
 import Background from '../../../components/Background';
 import api from '../../../services/api';
+import { changeMeet } from '../../../store/modules/meet/actions';
 
 import {
   Container,
@@ -25,6 +27,9 @@ import {
 } from './styles';
 
 export default function SearchMeets() {
+  const dispatch = useDispatch();
+  const changedMeet = useSelector(state => state.meet.meetchanged);
+
   const [meets, setMeets] = useState([]);
   const [dateT, setDate] = useState(new Date());
 
@@ -48,7 +53,7 @@ export default function SearchMeets() {
     }
 
     loadMeets();
-  }, [dateParam]);
+  }, [dateParam, changedMeet]);
 
   function handlePrevDay() {
     setDate(subDays(dateT, 1));
@@ -63,6 +68,8 @@ export default function SearchMeets() {
       const meet = { meetup_id: id };
 
       await api.post('/enroll', meet);
+
+      dispatch(changeMeet());
 
       Alert.alert('Success', 'Registered.');
     } catch (err) {

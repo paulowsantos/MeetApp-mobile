@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Image } from 'react-native';
+import { Image, Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -43,7 +43,10 @@ export default function Profile() {
       if (Constants.platform.ios) {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!');
+          Alert.alert(
+            'Error.',
+            'Sorry, we need camera roll permissions to make this work!'
+          );
         }
       }
     }

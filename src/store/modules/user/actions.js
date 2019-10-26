@@ -11,10 +11,3 @@ export function updateProfileSuccess(profile) {
     payload: { profile },
   };
 }
-
-export function updateAvatarRequest(data) {
-  return {
-    type: '@user/UPDATE_AVATAR_REQUEST',
-    payload: { data },
-  };
-}

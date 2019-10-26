@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { format, subDays, addDays } from 'date-fns';
+import { parseISO, format, subDays, addDays } from 'date-fns';
 import ca from 'date-fns/locale/en-CA';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -63,6 +63,11 @@ export default function SearchMeets() {
     setDate(addDays(dateT, 1));
   }
 
+  function FormatDate(date) {
+    const newDate = parseISO(date);
+    return format(newDate, "MMM do '-' hh:mma", { locale: ca });
+  }
+
   async function handleReg(id) {
     try {
       const meet = { meetup_id: id };
@@ -102,7 +107,7 @@ export default function SearchMeets() {
                 <Title>{item.title}</Title>
                 <InfoInfo>
                   <Icon name="event" size={15} color="#999" />
-                  <InfoText>{item.date}</InfoText>
+                  <InfoText>{FormatDate(item.date)}</InfoText>
                 </InfoInfo>
                 <InfoInfo>
                   <Icon name="location-on" size={15} color="#999" />

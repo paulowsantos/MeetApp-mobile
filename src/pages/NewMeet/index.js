@@ -1,10 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Text, Image, Alert } from 'react-native';
+import { Text, Image, Alert, DatePickerIOS } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import ca from 'date-fns/locale/en-CA';
 
 import api from '../../services/api';
 import Background from '../../components/Background';
@@ -19,21 +20,24 @@ import {
   TextButton,
   BannerInput,
   BannerContent,
+  FakeDateInput,
+  DatePickerContainer,
+  OkButton,
 } from './styles';
 
 export default function NewMeet() {
   const dispatch = useDispatch();
 
   const descRef = useRef();
-  const dateRef = useRef();
   const locRef = useRef();
 
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(new Date());
   const [local, setLocal] = useState('');
   const [bannerId, setBannerId] = useState();
   const [bannerImg, setBannerImg] = useState();
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
 
   const loading = false; // TODO
 
@@ -42,7 +46,10 @@ export default function NewMeet() {
       if (Constants.platform.ios) {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!');
+          Alert.alert(
+            'Warn',
+            'Sorry, we need camera roll permissions to make this work!'
+          );
         }
       }
     }
@@ -153,14 +160,18 @@ export default function NewMeet() {
             }}
           />
 
-          <FormInput
-            placeholder="Meetup Date"
-            ref={dateRef}
-            returnKeyType="next"
-            onSubmitEditing={() => locRef.current.focus()}
-            value={date}
-            onChangeText={setDate}
-          />
+          <FakeDateInput vis={!isDatePickerVisible} />
+
+          <DatePickerContainer vis={!isDatePickerVisible}>
+            <DatePickerIOS
+              date={date}
+              onDateChange={dt => setDate(dt)}
+              minuteInterval={10}
+              minimumDate={new Date()}
+              locale={ca}
+            />
+            <OkButton />
+          </DatePickerContainer>
 
           <FormInput
             placeholder="Location"

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { parseISO, format } from 'date-fns';
+import ca from 'date-fns/locale/en-CA';
 
 import defaultBanner from '../../assets/Bitmap.png';
 import Background from '../../components/Background';
@@ -38,6 +40,11 @@ export default function Registrations() {
     loadMyMeets();
   }, [changedMeet]);
 
+  function FormatDate(date) {
+    const newDate = parseISO(date);
+    return format(newDate, "MMM do '-' hh:mma", { locale: ca });
+  }
+
   async function handleCancel(id) {
     try {
       const meet = { id };
@@ -71,7 +78,7 @@ export default function Registrations() {
                 <Title>{item.Meetup.title}</Title>
                 <InfoInfo>
                   <Icon name="event" size={15} color="#999" />
-                  <InfoText>{item.Meetup.date}</InfoText>
+                  <InfoText>{FormatDate(item.Meetup.date)}</InfoText>
                 </InfoInfo>
                 <InfoInfo>
                   <Icon name="location-on" size={15} color="#999" />

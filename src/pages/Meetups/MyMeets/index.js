@@ -21,23 +21,43 @@ import {
   InfoText,
   CancelButton,
   TextButton,
+  Loading,
 } from './styles';
 
 export default function MyMeets() {
   const dispatch = useDispatch();
   const changedMeet = useSelector(state => state.meet.meetchanged);
 
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [myMeets, setMyMeets] = useState([]);
 
-  async function loadMyMeets() {
-    const response = await api.get('meetups');
+  async function loadMyMeets(pg = page) {
+    if (totalPages && pg > totalPages) return;
 
-    setMyMeets(response.data);
+    setLoading(true);
+
+    const response = await api.get('meetups', {
+      params: { page: pg },
+    });
+
+    setTotalPages(Math.ceil(response.data.count / 10));
+
+    if (myMeets.length === 0) {
+      console.tron.log(totalPages);
+      setMyMeets(response.data.rows);
+    } else {
+      console.tron.log(totalPages);
+      setMyMeets([...myMeets, ...response.data.rows]);
+    }
+    setPage(pg + 1);
+    setLoading(false);
   }
 
   useEffect(() => {
     loadMyMeets();
-  }, [changedMeet]);
+  }, [changedMeet]); //eslint-disable-line
 
   function FormatDate(date) {
     const newDate = parseISO(date);
@@ -54,7 +74,7 @@ export default function MyMeets() {
 
       Alert.alert('Success', 'Meetup canceld.');
     } catch (err) {
-      Alert.alert('Error.', 'Meetup does not exists.');
+      Alert.alert('Error.', "You can't delete this meetup.");
     }
   }
 
@@ -64,6 +84,9 @@ export default function MyMeets() {
         <MeetsList
           data={myMeets}
           keyExtractor={item => String(item.id)}
+          onEndReached={() => loadMyMeets()}
+          onEndReachedThreshold={0.1}
+          ListFooterComponent={loading && <Loading />}
           renderItem={({ item }) => (
             <Meet past={item.past}>
               <Banner
@@ -80,7 +103,10 @@ export default function MyMeets() {
                   <InfoText>{item.localization}</InfoText>
                 </InfoInfo>
               </Infos>
-              <CancelButton onPress={() => handleCancel(item.id)}>
+              <CancelButton
+                onPress={() => handleCancel(item.id)}
+                enabled={!item.past}
+              >
                 <TextButton>Cancel</TextButton>
               </CancelButton>
             </Meet>

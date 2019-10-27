@@ -32,7 +32,7 @@ export default function SignIn({ navigation }) {
   return (
     <Background>
       <Container>
-        <Image source={logo} />
+        <Image source={logo} style={{ height: 80, width: 80 }} />
 
         <Form>
           <FormInput

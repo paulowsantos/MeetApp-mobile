@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { Platform } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
@@ -67,7 +67,35 @@ export const DateInput = styled.TouchableOpacity`
 `;
 
 export const FakeDateInput = styled.TouchableOpacity`
-  height: ${props => (props.vis ? '46px' : '0px')};
+  display: ${props => (props.vis ? 'flex' : 'none')};
+  padding: 0 15px;
+  height: 46px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  flex-direction: row;
+  align-items: center;
+  font-size: 15px;
+  margin-bottom: 10px;
+  color: #fff;
 `;
-export const DatePickerContainer = styled.View``;
-export const OkButton = styled.TouchableOpacity``;
+
+export const DatePickerContainer = styled.View`
+  display: ${props => (props.vis ? 'flex' : 'none')};
+`;
+
+export const OkButton = styled.TouchableOpacity`
+  padding: 0 15px;
+  height: 46px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  flex-direction: row;
+  align-items: center;
+  font-size: 15px;
+  margin-bottom: 10px;
+`;
+
+export const OkButtonText = styled.Text`
+  font-size: 15px;
+  color: ${props => (props.colorText ? '#FFF' : 'rgba(255, 255, 255, 0.6)')};
+  margin-left: 10px;
+`;

@@ -6,15 +6,6 @@ export const Container = styled.SafeAreaView`
   flex: 1;
 `;
 
-// export const Title = styled.Text`
-//   font-size: 20px;
-//   color: #fff;
-//   font-weight: bold;
-//   align-self: center;
-//   margin-top: 10px;
-//   margin-bottom: 10px;
-// `;
-
 export const MeetsList = styled.FlatList.attrs({
   showsVerticalScrollIndiccator: false,
   contentContainerStyle: { padding: 10 },
@@ -73,4 +64,11 @@ export const TextButton = styled.Text`
   color: #fff;
   font-weight: bold;
   font-size: 16px;
+`;
+
+export const Loading = styled.ActivityIndicator.attrs({
+  size: 'small',
+  color: '#999',
+})`
+  margin: 30px 0;
 `;

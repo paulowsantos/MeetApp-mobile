@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Text, Image, Alert, DatePickerIOS } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { format } from 'date-fns';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
@@ -23,6 +24,7 @@ import {
   FakeDateInput,
   DatePickerContainer,
   OkButton,
+  OkButtonText,
 } from './styles';
 
 export default function NewMeet() {
@@ -35,7 +37,7 @@ export default function NewMeet() {
   const [desc, setDesc] = useState('');
   const [date, setDate] = useState(new Date());
   const [local, setLocal] = useState('');
-  const [bannerId, setBannerId] = useState();
+  // const [bannerId, setBannerId] = useState();
   const [bannerImg, setBannerImg] = useState();
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
 
@@ -57,13 +59,21 @@ export default function NewMeet() {
     getPermission();
   }, []);
 
+  function FormatDate(dateF) {
+    return format(dateF, "MMM do '-' hh:mma", { locale: ca });
+  }
+
   async function handleSubmit() {
     try {
+      const fmtDate = format(date, "yyyy'-'MM'-'dd'T'HH:mm:ss'-08:00'", {
+        locale: ca,
+      });
+
       const meet = {
         title,
         description: desc,
         localization: local,
-        date,
+        date: fmtDate,
       };
 
       await api.post('/meetups', meet);
@@ -74,8 +84,9 @@ export default function NewMeet() {
 
       setTitle('');
       setDesc('');
-      setDate('');
+      setDate(new Date());
       setLocal('');
+      setIsDatePickerVisible(false);
     } catch (err) {
       Alert.alert('Error', 'Check your input data.');
     }
@@ -102,11 +113,11 @@ export default function NewMeet() {
 
       console.tron.log(data);
 
-      const response = await api.post('files', data);
+      // const response = await api.post('files', data);
 
-      const { id } = response.data;
+      // const { id } = response.data;
 
-      setBannerId(id);
+      // setBannerId(id);
     }
   }
 
@@ -160,17 +171,29 @@ export default function NewMeet() {
             }}
           />
 
-          <FakeDateInput vis={!isDatePickerVisible} />
+          <FakeDateInput
+            vis={!isDatePickerVisible}
+            onPress={() => setIsDatePickerVisible(!isDatePickerVisible)}
+          >
+            <OkButtonText colorText={!!date}>
+              {date && FormatDate(date)}
+            </OkButtonText>
+          </FakeDateInput>
 
-          <DatePickerContainer vis={!isDatePickerVisible}>
+          <DatePickerContainer vis={isDatePickerVisible}>
             <DatePickerIOS
               date={date}
               onDateChange={dt => setDate(dt)}
               minuteInterval={10}
               minimumDate={new Date()}
-              locale={ca}
             />
-            <OkButton />
+            <OkButton
+              onPress={() => setIsDatePickerVisible(!isDatePickerVisible)}
+            >
+              <OkButtonText colorText={!!date}>
+                Confirm Date: {date && FormatDate(date)}
+              </OkButtonText>
+            </OkButton>
           </DatePickerContainer>
 
           <FormInput

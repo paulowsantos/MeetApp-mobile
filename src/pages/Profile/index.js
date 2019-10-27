@@ -6,8 +6,9 @@ import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 
 import Background from '../../components/Background';
-import api from '../../services/api';
+// import api from '../../services/api';
 import Header from '../../components/Header';
+import avatar from '../../assets/avatar.jpg';
 import { updateProfileRequest } from '../../store/modules/user/actions';
 import { signOut } from '../../store/modules/auth/actions';
 import {
@@ -35,8 +36,10 @@ export default function Profile() {
   const [oldPassword, setOldPassword] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [avatarimg, setAvatarimg] = useState(profile.avatar.url);
-  const [avatar_id, setAvatarid] = useState('');
+  const [avatarimg, setAvatarimg] = useState(
+    profile.avatar && profile.avatar.url
+  );
+  // const [avatar_id, setAvatarid] = useState('');
 
   useEffect(() => {
     async function getPermission() {
@@ -65,7 +68,7 @@ export default function Profile() {
       updateProfileRequest({
         name,
         email,
-        avatar_id,
+        // avatar_id,
         oldPassword,
         password,
         confirmPassword,
@@ -88,7 +91,6 @@ export default function Profile() {
       console.tron.log(result);
       setAvatarimg(result.uri);
 
-      // const originalName
       const data = new FormData();
       console.tron.log(data);
 
@@ -99,13 +101,11 @@ export default function Profile() {
           : result.uri,
       });
 
-      console.tron.log(data);
+      // const response = await api.post('files', data);
 
-      const response = await api.post('files', data);
+      // const { id } = response.data;
 
-      const { id } = response.data;
-
-      setAvatarid(id);
+      // setAvatarid(id);
     }
   }
 
@@ -122,11 +122,13 @@ export default function Profile() {
                 borderWidth: 5,
                 borderColor: '#999',
               }}
-              source={{
-                uri:
-                  avatarimg ||
-                  'https://api.adorable.io/avatars/50/abott@adorable.png',
-              }}
+              source={
+                avatarimg
+                  ? {
+                      uri: avatarimg,
+                    }
+                  : avatar
+              }
             />
           </AvatarInput>
           <FormInput

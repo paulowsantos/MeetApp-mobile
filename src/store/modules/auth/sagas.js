@@ -1,7 +1,7 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 
-import { signInSuccess, signFailure } from './actions';
+import { signInSuccess, signUpSuccess, signFailure } from './actions';
 import api from '../../../services/api';
 
 export function* signIn({ payload }) {
@@ -18,8 +18,6 @@ export function* signIn({ payload }) {
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
     yield put(signInSuccess(token, user));
-
-    // history.push('/dashboard');
   } catch (err) {
     Alert.alert('Authentication failed', 'Check your email and password.');
     yield put(signFailure());
@@ -36,8 +34,9 @@ export function* signUp({ payload }) {
       password,
     });
 
-    yield put(signFailure());
-    // history.push('/');
+    yield put(signUpSuccess());
+
+    Alert.alert('Registration success', 'Go to login page.');
   } catch (err) {
     Alert.alert('Registration failed', 'Check your inputs.');
 
@@ -55,9 +54,7 @@ export function setToken({ payload }) {
   }
 }
 
-export function signOut() {
-  // history.push('/');
-}
+export function signOut() {}
 
 export default all([
   takeLatest('persist/REHYDRATE', setToken),

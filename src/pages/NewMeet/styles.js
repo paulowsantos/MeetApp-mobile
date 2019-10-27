@@ -62,8 +62,6 @@ export const DateInput = styled.TouchableOpacity`
   border-radius: 4px;
 
   padding: 0 15px;
-  /* flex-direction: row;
-  align-items: center; */
 `;
 
 export const FakeDateInput = styled.TouchableOpacity`

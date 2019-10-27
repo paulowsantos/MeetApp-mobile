@@ -29,6 +29,9 @@ export default function SignUp({ navigation }) {
 
   function handleSubmit() {
     dispatch(signUpRequest(name, email, password));
+    setName('');
+    setEmail('');
+    setPassword('');
   }
 
   return (
@@ -73,7 +76,7 @@ export default function SignUp({ navigation }) {
           />
 
           <SubmitButton loading={loading} onPress={handleSubmit}>
-            <TextButton>Sign Up</TextButton>
+            <TextButton>{loading ? 'Loading...' : 'Sign Up'}</TextButton>
           </SubmitButton>
         </Form>
 

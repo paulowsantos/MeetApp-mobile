@@ -57,8 +57,4 @@ export const TextButton = styled.Text`
 export const AvatarInput = styled.TouchableOpacity`
   align-self: center;
   margin-bottom: 30px;
-  /* height: 150px;
-  /* width: 150px; */
-  /* border-radius: 75px; */
-  /* background: #eee; */
 `;

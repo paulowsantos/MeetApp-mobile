@@ -88,11 +88,9 @@ export default function Profile() {
     });
 
     if (!result.cancelled) {
-      console.tron.log(result);
       setAvatarimg(result.uri);
 
       const data = new FormData();
-      console.tron.log(data);
 
       data.append('file', {
         originalname: 'teste.svg',

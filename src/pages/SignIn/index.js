@@ -60,7 +60,7 @@ export default function SignIn({ navigation }) {
           />
 
           <SubmitButton loading={loading} onPress={handleSubmit}>
-            <TextButton>Sign In</TextButton>
+            <TextButton>{loading ? 'Loading...' : 'Sign Up'}</TextButton>
           </SubmitButton>
         </Form>
 

@@ -86,6 +86,7 @@ export default function NewMeet() {
       setDesc('');
       setDate(new Date());
       setLocal('');
+      setBannerImg();
       setIsDatePickerVisible(false);
     } catch (err) {
       Alert.alert('Error', 'Check your input data.');
@@ -98,11 +99,9 @@ export default function NewMeet() {
     });
 
     if (!result.cancelled) {
-      console.tron.log(result);
       setBannerImg(result.uri);
 
       const data = new FormData();
-      console.tron.log(data);
 
       data.append('file', {
         originalname: 'teste.svg',
@@ -110,8 +109,6 @@ export default function NewMeet() {
           ? result.uri.replace('file://', '')
           : result.uri,
       });
-
-      console.tron.log(data);
 
       // const response = await api.post('files', data);
 

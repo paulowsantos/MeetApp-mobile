@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Alert } from 'react-native';
+import { Alert, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { parseISO, format } from 'date-fns';
 import ca from 'date-fns/locale/en-CA';
@@ -31,9 +31,10 @@ export default function MyMeets() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [myMeets, setMyMeets] = useState([]);
 
-  async function loadMyMeets(pg = page) {
+  async function loadMyMeets(pg = page, shouldRefresh = false) {
     if (totalPages && pg > totalPages) return;
 
     setLoading(true);
@@ -45,11 +46,11 @@ export default function MyMeets() {
     setTotalPages(Math.ceil(response.data.count / 10));
 
     if (myMeets.length === 0) {
-      console.tron.log(totalPages);
       setMyMeets(response.data.rows);
     } else {
-      console.tron.log(totalPages);
-      setMyMeets([...myMeets, ...response.data.rows]);
+      setMyMeets(
+        shouldRefresh ? response.data.rows : [...myMeets, ...response.data.rows]
+      );
     }
     setPage(pg + 1);
     setLoading(false);
@@ -78,6 +79,14 @@ export default function MyMeets() {
     }
   }
 
+  async function refreshList() {
+    setRefreshing(true);
+
+    await loadMyMeets(1, true);
+
+    setRefreshing(false);
+  }
+
   return (
     <Background>
       <Container>
@@ -86,6 +95,13 @@ export default function MyMeets() {
           keyExtractor={item => String(item.id)}
           onEndReached={() => loadMyMeets()}
           onEndReachedThreshold={0.1}
+          refreshControl={
+            <RefreshControl
+              tintColor="#FFF"
+              refreshing={refreshing}
+              onRefresh={refreshList}
+            />
+          }
           ListFooterComponent={loading && <Loading />}
           renderItem={({ item }) => (
             <Meet past={item.past}>

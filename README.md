@@ -126,7 +126,6 @@ $ yarn start
 - [Expo-Image-Picker](https://docs.expo.io/versions/latest/sdk/imagepicker/) - Image picker from Expo
 - [Prop-Types](https://www.npmjs.com/package/prop-types) - Static Type Checker
 - [Prettier](https://prettier.io/) - Code Formatter
-- [Babel](https://babeljs.io/) - Java Compiler
 - [Reactotron](https://infinite.red/reactotron) - Inspector
 - [Styled-Components](https://www.styled-components.com/) - Styles
 - [React-Native-Linear-Gradient](https://github.com/react-native-community/react-native-linear-gradient) - Gradient Styles

@@ -122,7 +122,7 @@ $ yarn start
 - [Redux-Saga](https://redux-saga.js.org/) - Side-Effect middleware for Redux
 - [Redux-Persist](https://github.com/rt2zz/redux-persist) - Persist and rehydrate a Redux store
 - [Axios](https://github.com/axios/axios) - HTTP Client
-- [ESlint](https://eslint.org/) - Linter
+- [ESlint](https://eslint.org/) - JS Linter and code style
 - [Expo-Image-Picker](https://docs.expo.io/versions/latest/sdk/imagepicker/) - Image picker from Expo
 - [Prop-Types](https://www.npmjs.com/package/prop-types) - Static Type Checker
 - [Prettier](https://prettier.io/) - Code Formatter
